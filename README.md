@@ -21,7 +21,7 @@ python3 -m venv .evnv
 #Activate the virtual environment
 source .venv/bin/activate
 
-#Install the require packages
+#Install the required packages
 pip install -r requirements.txt
 
 #Run the script
