@@ -10,6 +10,12 @@ Its works by extracting entities from popular tweets.
 
 ```bash
 
+git clone https://github.com/ibnjunaid/trendsProcessor.git
+
+#cd into trendsProcessor
+
+cd trendsProcessor
+
 # Install libraries required by python
 sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libsqlite3-dev libreadline-dev libffi-dev wget libbz2-dev
 
@@ -23,10 +29,6 @@ pyenv install 3.7
 pip install pipenv
 
 #Clone the repository
-git clone https://github.com/ibnjunaid/trendsProcessor.git
-
-#cd into trendsProcessor
-cd trendsProcessor
 
 #Sync Dependencies
 pipenv sync
