@@ -1,4 +1,5 @@
-#This function extracts top referenced urls to this specific trend
+
+# This function extracts top referenced urls to this specific trend
 def extract_top_urls(tweets):
     top_urls = {}
     for tweet in tweets:
@@ -7,10 +8,11 @@ def extract_top_urls(tweets):
                 top_urls[url] += 1
             else:
                 top_urls[url] = 1
-    x = {k: v for k, v in sorted(top_urls.items(), key=lambda item: item[1],reverse = True)}
+    x = {k: v for k, v in sorted(top_urls.items(), key=lambda item: item[1], reverse=True)}
     return dict(list(x.items())[:10])
 
-#This function extracts top mentions to this specific trend
+
+# This function extracts top mentions to this specific trend
 def extract_top_mentions(tweets):
     top_mentions = {}
     for tweet in tweets:
@@ -19,11 +21,11 @@ def extract_top_mentions(tweets):
                 top_mentions[mention.get("screen_name", None)] += 1
             else:
                 top_mentions[mention.get("screen_name", None)] = 1
-    x = {k: v for k, v in sorted(top_mentions.items(), key=lambda item: item[1],reverse = True)}
+    x = {k: v for k, v in sorted(top_mentions.items(), key=lambda item: item[1], reverse=True)}
     return dict(list(x.items())[:10])
 
 
-#This function extracts other top hashtags to this specific trend
+# This function extracts other top hashtags to this specific trend
 def extract_top_hashtags(tweets):
     top_hashtags = {}
     for tweet in tweets:
@@ -32,7 +34,5 @@ def extract_top_hashtags(tweets):
                 top_hashtags[hashtag] += 1
             else:
                 top_hashtags[hashtag] = 1
-    x = {k: v for k, v in sorted(top_hashtags.items(), key=lambda item: item[1],reverse = True)}
+    x = {k: v for k, v in sorted(top_hashtags.items(), key=lambda item: item[1], reverse=True)}
     return dict(list(x.items())[:10])
-
-
