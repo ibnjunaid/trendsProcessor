@@ -3,7 +3,7 @@ import twint
 
 #This function scrapes a batch of 200 tweets for the given trend
 
-def retrive_tweets(trend, limit = 1000, isVerified = False):
+def retrive_tweets(trend, limit = 100, isVerified = False):
     config = twint.Config()
     config.Search = trend
     config.Verified = isVerified

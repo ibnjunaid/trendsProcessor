@@ -3,7 +3,7 @@ from src import scrap_hashtag
 
 def main(args):
     # print(type(args['messages'][0]['value']))
-    print("Scraper started")
+    #print("Scraper started")
     hashtags = args['messages'][0]['value']['hashtags']
     scraped_data = []
     if (hashtags == None):
@@ -18,6 +18,7 @@ def main(args):
     return {'data': scraped_data}
 
 args = {'messages': [{'key': None, 'offset': 50, 'partition': 0,
-                      'topic': 'hashtags', 'value': {"hashtags": ["#Pathaan500CroreEvent"]}}]}
+                      'topic': 'hashtags', 'value': {"hashtags": ["JUNG HOSEOK"]}}]}
 
-print(main(args))
+x = main(args)
+print(x.get("data")[0].get("hashtag_details"))

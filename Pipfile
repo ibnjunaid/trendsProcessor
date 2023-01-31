@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 twint = {git = "https://github.com/twintproject/twint.git"}
+nltk = "*"
 
 [dev-packages]
 
