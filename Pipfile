@@ -6,8 +6,11 @@ name = "pypi"
 [packages]
 twint = {git = "https://github.com/twintproject/twint.git"}
 nltk = "*"
+orjson = "*"
 
 [dev-packages]
+pylint = "*"
+yapf = "*"
 
 [requires]
 python_version = "3.7"
