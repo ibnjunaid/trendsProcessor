@@ -1,9 +1,8 @@
 from src import scrap_hashtag
+from src.analyzer.main import predict_tweet, freqs, theta,label_tweet
 
 
 def main(args):
-    # print(type(args['messages'][0]['value']))
-    #print("Scraper started")
     hashtags = args['messages'][0]['value']['hashtags']
     scraped_data = []
     if (hashtags == None):
@@ -18,7 +17,11 @@ def main(args):
     return {'data': scraped_data}
 
 args = {'messages': [{'key': None, 'offset': 50, 'partition': 0,
-                      'topic': 'hashtags', 'value': {"hashtags": ["JUNG HOSEOK"]}}]}
+                      'topic': 'hashtags', 'value': {"hashtags": ["#bengalururain"]}}]}
 
 x = main(args)
-print(x.get("data")[0].get("hashtag_details"))
+prediction = predict_tweet(x['data'][0]['hashtag_details'], freqs=freqs, theta=theta)
+
+print('----------------------------')
+
+print('Prediction for', x['data'][0]['hashtag'], 'is ', label_tweet(prediction))

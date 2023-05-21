@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 from nltk.corpus import twitter_samples 
 
-from utils import process_tweet, build_freqs
+from src.analyzer.utils import process_tweet, build_freqs
 
 # select the set of positive and negative tweets
 all_positive_tweets = twitter_samples.strings('positive_tweets.json')
@@ -227,11 +227,7 @@ def test_logistic_regression(test_x, test_y, freqs, theta, predict_tweet=predict
     Output: 
         accuracy: (# of tweets classified correctly) / (total # of tweets)
     """
-    
-    ### START CODE HERE ###
-#     print(test_y)
-    
-    # the list for storing predictions
+
     y_hat = []
     
     for tweet in test_x:
@@ -256,13 +252,14 @@ def test_logistic_regression(test_x, test_y, freqs, theta, predict_tweet=predict
     return accuracy
 
 # Feel free to change the tweet below
-my_tweet = ''
-print(process_tweet(my_tweet))
-y_hat = predict_tweet(my_tweet, freqs, theta)
-print(y_hat)
-if y_hat > 0.5:
-    print('Positive sentiment')
-elif y_hat==0.5:
-    print('Neutral sentiment')
-else: 
-    print('Negative sentiment')
+# my_tweet = ''
+# print(process_tweet(my_tweet))
+# y_hat = predict_tweet(my_tweet, freqs, theta)
+
+def label_tweet(probablity):
+    if probablity > 0.5:
+        return 'Positive sentiment'
+    elif probablity==0.5:
+        return 'Neutral sentiment'
+    else: 
+        return 'Negative sentiment'

@@ -1,26 +1,18 @@
 from datetime import date
-import twint
+import snscrape.modules.twitter as sntwitter
 
-#This function scrapes a batch of 200 tweets for the given trend
+#This function scrapes a batch of 100 tweets for the given trend
 
-def retrive_tweets(trend, limit = 100, isVerified = False):
-    config = twint.Config()
-    config.Search = trend
-    config.Verified = isVerified
-    config.Min_likes = 100
-    # config.Lang = 'en'
-    # config.Count = True
-    config.Limit = limit
-    config.Store_object = True
-    config.Filter_retweets = True
-    config.Hide_output = True
-    config.Country = "India"
-    # config.Images = True
-    # config.Videos = True
-    # config.Since = str(date.today().year) + '-' + str(date.today().month) + '-' + str(date.today().day -1)
-    # Initiate the search
-    twint.run.Search(config)
-    return twint.output.tweets_list
+def retrive_tweets(trend, limit = 10, isVerified = False):
+    scraper = sntwitter.TwitterSearchScraper(trend)
+    tweets: list[str] = [] 
+    for i, tweet in enumerate(scraper.get_items(), 0):
+        data = tweet.rawContent
+        tweets.append(data)
+        if i > limit:
+            break
+    return tweets
+
 #end of fn
 
 

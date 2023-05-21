@@ -4,11 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-twint = {git = "https://github.com/twintproject/twint.git"}
 nltk = "*"
+snscrape = {git = "https://github.com/JustAnotherArchivist/snscrape.git"}
+numpy = "*"
+pandas = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.7"
-python_full_version = "3.7.16"
+python_version = "3.8"
+python_full_version = "3.8.16"
