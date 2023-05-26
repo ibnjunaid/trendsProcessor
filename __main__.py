@@ -1,10 +1,8 @@
 from src import scrap_hashtag
-from src.analyzer.predict import predict_hashtag_sentiment
+from src.analyzer.main import predict_tweet, freqs, theta,label_tweet
 
 
 def main(args):
-    # print(type(args['messages'][0]['value']))
-    #print("Scraper started")
     hashtags = args['messages'][0]['value']['hashtags']
     scraped_data = []
     if (hashtags == None):
@@ -19,27 +17,11 @@ def main(args):
     return {'data': scraped_data}
 
 args = {'messages': [{'key': None, 'offset': 50, 'partition': 0,
-                      'topic': 'hashtags', 'value': {"hashtags": ["#WWERaw"]}}]}
+                      'topic': 'hashtags', 'value': {"hashtags": ["#bengalururain"]}}]}
 
-# x = main(args)
-# print(x.get("data")[0].get("hashtag_details"))
+x = main(args)
+prediction = predict_tweet(x['data'][0]['hashtag_details'], freqs=freqs, theta=theta)
 
-# for k in x.get("data"):
-#     print("Predecting for ", k.get("hashtag"))
-#     y_hat = m.predict_tweet(k.get("hashtag_details"), m.freqs, m.theta)
-#     print(y_hat)
-#     if y_hat > 0.5:
-#         print('Positive sentiment')
-#     elif y_hat==0.5:
-#         print('Neutral sentiment')
-#     else: 
-#         ('Negative sentiment')
+print('----------------------------')
 
-y_hat = predict_hashtag_sentiment('I am feeling good')
-print(y_hat)
-if y_hat > 0.5:
-    print('Positive sentiment')
-elif y_hat==0.5:
-    print('Neutral sentiment')
-else: 
-    print('Negative sentiment')
+print('Prediction for', x['data'][0]['hashtag'], 'is ', label_tweet(prediction))

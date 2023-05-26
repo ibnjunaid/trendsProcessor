@@ -3,8 +3,7 @@ import src.preprocessor.pre as preprocessor
 import functools
 
 def scrap_hashtag(trend_hashtag):
-    tweet_object_list = scraper.retrive_tweets(trend_hashtag)
-    tweet_content_list: list[str] = map(lambda a: a.tweet, tweet_object_list)
+    tweet_content_list: list[str] = scraper.retrive_tweets(trend_hashtag)
     aggregated_tweet = functools.reduce(reducer, tweet_content_list)
     return aggregated_tweet
 
