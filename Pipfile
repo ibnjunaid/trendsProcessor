@@ -8,6 +8,11 @@ nltk = "*"
 snscrape = {git = "https://github.com/JustAnotherArchivist/snscrape.git"}
 numpy = "*"
 pandas = "*"
+fastapi = "*"
+uvicorn = {extras = ["standard"], version = "*"}
+pydantic = "*"
+openai = "*"
+hugchat = "*"
 
 [dev-packages]
 

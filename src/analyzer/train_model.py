@@ -1,8 +1,6 @@
-# run this cell to import nltk, 
-# install nltk in your system if not present already. run the command:pip uninstall nltk
-
 import nltk
 from os import getcwd
+import orjson
 
 nltk.download('twitter_samples')
 nltk.download('stopwords')
@@ -15,6 +13,7 @@ import pandas as pd
 from nltk.corpus import twitter_samples 
 
 from src.analyzer.utils import process_tweet, build_freqs
+from src.analyzer.custom_serielizer import JSencoded
 
 # select the set of positive and negative tweets
 all_positive_tweets = twitter_samples.strings('positive_tweets.json')
@@ -33,20 +32,9 @@ test_x = test_pos + test_neg
 train_y = np.append(np.ones((len(train_pos), 1)), np.zeros((len(train_neg), 1)), axis=0)
 test_y = np.append(np.ones((len(test_pos), 1)), np.zeros((len(test_neg), 1)), axis=0)
 
-# Print the shape train and test sets
-print("train_y.shape = " + str(train_y.shape))
-print("test_y.shape = " + str(test_y.shape))
 
 # create frequency dictionary
 freqs = build_freqs(train_x, train_y)
-
-# check the output
-print("type(freqs) = " + str(type(freqs)))
-print("len(freqs) = " + str(len(freqs.keys())))
-
-# test the function below
-print('This is an example of a positive tweet: \n', train_x[0])
-print('\nThis is an example of the processed version of the tweet: \n', process_tweet(train_x[0]))
 
 # UNQ_C1 GRADED FUNCTION: sigmoid
 def sigmoid(z): 
@@ -69,17 +57,11 @@ if (sigmoid(0) == 0.5):
     print('SUCCESS!')
 else:
     print('Oops!')
-
 if (sigmoid(4.92) == 0.9927537604041685):
     print('CORRECT!')
 else:
     print('Oops again!')
 
-# verify that when the model predicts close to 1, but the actual label is 0, the loss is a large positive value
--1 * (1 - 0) * np.log(1 - 0.9999) # loss is about 9.2
-
-# verify that when the model predicts close to 0 but the actual label is 1, the loss is a large positive value
--1 * np.log(0.0001) # loss is about 9.2
 
 # UNQ_C2 GRADED FUNCTION: gradientDescent
 def gradientDescent(x, y, theta, alpha, num_iters):
@@ -162,16 +144,6 @@ def extract_features(tweet, freqs, process_tweet=process_tweet):
     assert(x.shape == (1, 3))
     return x
 
-# Check your function
-# test 1
-# test on training data
-tmp1 = extract_features(train_x[0], freqs)
-print(tmp1)
-
-# test 2:
-# check for when the words are not in the freqs dictionary
-tmp2 = extract_features('blorb bleeeeb bloooob', freqs)
-print(tmp2)
 
 # collect the features 'x' and stack them into a matrix 'X'
 X = np.zeros((len(train_x), 3))
@@ -186,6 +158,17 @@ J, theta = gradientDescent(X, Y, np.zeros((3, 1)), 1e-9, 1500)
 print(f"The cost after training is {J:.8f}.")
 print(f"The resulting vector of weights is {[round(t, 8) for t in np.squeeze(theta)]}")
 
+print('theta is',theta, type(theta))
+parameters = {
+    'freqs': JSencoded(freqs),
+    'theta': theta
+}
+
+serialized = orjson.dumps(parameters, option=orjson.OPT_SERIALIZE_NUMPY)
+
+with open("model_parameters.json", 'wb') as f:
+    f.write(serialized)
+
 # UNQ_C4 GRADED FUNCTION: predict_tweet
 def predict_tweet(tweet, freqs, theta):
     '''
@@ -195,26 +178,13 @@ def predict_tweet(tweet, freqs, theta):
         theta: (3,1) vector of weights
     Output: 
         y_pred: the probability of a tweet being positive or negative
-    '''
-    ### START CODE HERE ###
-    
+    '''    
     # extract the features of the tweet and store it into x
     x = extract_features(tweet, freqs)
-    
     # make the prediction using x and theta
     y_pred = sigmoid(np.dot(x,theta))
-    
-    ### END CODE HERE ###
-    
     return y_pred
 
-# Run this cell to test your function
-for tweet in ['I am happy', 'I am bad', 'this movie should have been great.', 'great', 'great great', 'great great great', 'great great great great']:
-    print( '%s -> %f' % (tweet, predict_tweet(tweet, freqs, theta))) 
-
-# Feel free to check the sentiment of your own tweet below
-my_tweet = 'I am learning :)'
-predict_tweet(my_tweet, freqs, theta)
 
 # UNQ_C5 GRADED FUNCTION: test_logistic_regression
 def test_logistic_regression(test_x, test_y, freqs, theta, predict_tweet=predict_tweet):
@@ -227,7 +197,11 @@ def test_logistic_regression(test_x, test_y, freqs, theta, predict_tweet=predict
     Output: 
         accuracy: (# of tweets classified correctly) / (total # of tweets)
     """
-
+    
+    ### START CODE HERE ###
+#     print(test_y)
+    
+    # the list for storing predictions
     y_hat = []
     
     for tweet in test_x:
@@ -251,15 +225,3 @@ def test_logistic_regression(test_x, test_y, freqs, theta, predict_tweet=predict
     
     return accuracy
 
-# Feel free to change the tweet below
-# my_tweet = ''
-# print(process_tweet(my_tweet))
-# y_hat = predict_tweet(my_tweet, freqs, theta)
-
-def label_tweet(probablity):
-    if probablity > 0.5:
-        return 'Positive sentiment'
-    elif probablity==0.5:
-        return 'Neutral sentiment'
-    else: 
-        return 'Negative sentiment'
