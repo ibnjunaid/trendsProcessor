@@ -58,13 +58,15 @@ def predict_tweet(tweet, freqs, theta):
     # extract the features of the tweet and store it into x
     x = extract_features(tweet, freqs)
     # make the prediction using x and theta
-    print('features', x)
-    print('dot', np.dot(x,theta))
+    # print('features', x)
+    # print('dot', np.dot(x,theta))
     y_pred = sigmoid(np.dot(x,theta))
-    print('y_pred', y_pred)
+    # print('y_pred', y_pred)
     return y_pred
 
 with open("model_parameters.json", "rb") as file:
+    global freqs
+    global theta
     data = file.read()
     deserialized_parameters = orjson.loads(data)
     freqs = JSdecoded(deserialized_parameters.get('freqs'))
@@ -72,4 +74,4 @@ with open("model_parameters.json", "rb") as file:
 
 def predict_hashtag_sentiment(tweet:str) -> float:
     x =  predict_tweet(tweet, freqs, theta)
-    return x
+    return x[0]
